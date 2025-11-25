@@ -1,0 +1,4 @@
+fr/univartois/stage/MvcApplication.class
+fr/univartois/stage/controller/StageController.class
+fr/univartois/stage/service/StageService.class
+fr/univartois/stage/model/StageEntry.class
