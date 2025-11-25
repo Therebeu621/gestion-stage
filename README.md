@@ -1,5 +1,20 @@
 # Mon Futur Stage
 
-Le but de ce projet est de faire l'analyse des besoins d'une application web qui permet de présenter des informations sur les stages des étudiants en informatique de l'université d'Artois, pour favoriser la recherche de stage pour les étudiants.
+Application Jakarta MVC qui affiche le fichier `stages2025-anonyme.csv` via une page JSP.
 
-L'outil pourra aussi être étendu pour permettre aux responsables de formation de gérer les visites de stage et les créneaux de soutenances.
+## Prérequis
+- Java 17+
+- Maven 3.8+ (pour `mvn clean package`)
+- Payara Micro 7 (jar téléchargé, ex: `~/Downloads/payara-micro-7.2025.1.jar`)
+
+## Lancer l'application (Payara Micro)
+```bash
+mvn clean package
+java -jar ~/Downloads/payara-micro-7.2025.1.jar --deploy target/mon-futur-stage.war
+```
+
+Puis ouvrir : `http://localhost:8080/mon-futur-stage/mvc/`
+
+## Notes
+- Le CSV est dans `src/main/resources/stages2025-anonyme.csv`.
+- Le contrôleur MVC est exposé sous `/mvc` et la vue JSP est dans `src/main/webapp/WEB-INF/views/stages.jsp`.
