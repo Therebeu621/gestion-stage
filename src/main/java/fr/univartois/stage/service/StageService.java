@@ -38,6 +38,21 @@ public class StageService {
         return stages;
     }
 
+    public List<StageEntry> findByCompany(String companyName) {
+        if (companyName == null || companyName.isBlank()) {
+            return List.of();
+        }
+        return stages.stream()
+                .filter(s -> companyName.equalsIgnoreCase(s.getNomEtablissementAccueil()))
+                .toList();
+    }
+
+    public StageEntry findOneCompany(String companyName) {
+        return findByCompany(companyName).stream()
+                .findFirst()
+                .orElse(null);
+    }
+
     private void loadFromCsv() throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("stages2025-anonyme.csv")) {
             if (is == null) {
@@ -73,8 +88,7 @@ public class StageService {
                             values.get(6),
                             values.get(7),
                             values.get(8),
-                            values.get(9)
-                    ));
+                            values.get(9)));
                 }
 
                 stages = loaded;
@@ -122,7 +136,6 @@ public class StageService {
                 "Prénom Enseignant référent",
                 "Nom Etablissement d'accueil",
                 "Etablissement d'Accueil - Commune",
-                "Code Postal"
-        );
+                "Code Postal");
     }
 }
