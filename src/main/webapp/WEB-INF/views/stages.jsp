@@ -116,8 +116,33 @@
 
         <body>
             <div class="wrapper">
-                <h1>Stages 2025</h1>
-                <p class="subtitle">Données chargées depuis le fichier CSV fourni.</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h1>Stages 2025</h1>
+                        <p class="subtitle">Données chargées depuis le fichier CSV fourni.</p>
+                    </div>
+                    <div>
+                        <c:choose>
+                            <c:when test="${not empty user}">
+                                <span style="margin-right: 15px;">Bonjour, <strong>${user.prenom}</strong></span>
+                                <c:if test="${user.role == 'STUDENT'}">
+                                    <a href="${pageContext.request.contextPath}/mvc/my-stages"
+                                        style="color: #22d3ee; text-decoration: none; font-weight: bold; margin-right: 15px; border: 1px solid #22d3ee; padding: 5px 10px; border-radius: 5px;">
+                                        Mes Stages
+                                    </a>
+                                </c:if>
+                                <a href="${pageContext.request.contextPath}/mvc/auth/logout"
+                                    style="color: #cbd5e1; text-decoration: none;">Déconnexion</a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="${pageContext.request.contextPath}/mvc/auth/login"
+                                    style="background: #22d3ee; color: #0f172a; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600;">
+                                    Se connecter
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
 
                 <div class="card">
                     <table>

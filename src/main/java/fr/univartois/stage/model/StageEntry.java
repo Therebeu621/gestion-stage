@@ -12,7 +12,7 @@ public class StageEntry {
     private final String nomEtablissementAccueil;
     private final String communeEtablissement;
     private final String codePostal;
-    private final boolean accord;
+    private boolean accord;
 
     public StageEntry(String nomEtudiant,
             String prenomEtudiant,
@@ -39,6 +39,10 @@ public class StageEntry {
 
     public boolean isAccord() {
         return accord;
+    }
+
+    public void setAccord(boolean accord) {
+        this.accord = accord;
     }
 
     public String getNomEtudiant() {

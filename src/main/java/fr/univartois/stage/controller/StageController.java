@@ -22,11 +22,17 @@ public class StageController {
     @Inject
     StageService stageService;
 
+    @Inject
+    fr.univartois.stage.model.UserSession userSession;
+
     @GET
     @Produces(MediaType.TEXT_HTML)
     @View("stages.jsp")
     public void list() {
         models.put("columns", stageService.headers());
         models.put("stages", stageService.findAll());
+        if (userSession.isLoggedIn()) {
+            models.put("user", userSession.getUser());
+        }
     }
 }

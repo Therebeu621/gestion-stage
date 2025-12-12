@@ -4,6 +4,7 @@ public class User {
     private String login;
     private String password;
     private String prenom;
+    private String email;
     private Role role;
 
     public enum Role {
@@ -40,6 +41,14 @@ public class User {
 
     public void setPrenom(String prenom) {
         this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Role getRole() {

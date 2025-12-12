@@ -12,8 +12,19 @@ public class AuthService {
     @Inject
     private UserRepository userRepository;
 
+    @Inject
+    private LdapService ldapService;
+
     public Optional<User> authenticate(String login, String password) {
-        return userRepository.findByLogin(login)
+        // Tente d'abord en local (Responsable / Admin)
+        Optional<User> localUser = userRepository.findByLogin(login)
                 .filter(u -> u.getPassword().equals(password));
+
+        if (localUser.isPresent()) {
+            return localUser;
+        }
+
+        // Sinon tente LDAP (Étudiant)
+        return ldapService.authenticate(login, password);
     }
 }

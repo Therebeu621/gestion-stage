@@ -53,6 +53,22 @@ public class StageService {
                 .orElse(null);
     }
 
+    public List<StageEntry> findByStudentEmail(String email) {
+        if (email == null)
+            return List.of();
+        return stages.stream()
+                .filter(s -> email.equalsIgnoreCase(s.getMailUniversitaire()))
+                .toList();
+    }
+
+    public void toggleConsent(String email, int stageIndex) {
+        List<StageEntry> studentStages = findByStudentEmail(email);
+        if (stageIndex >= 0 && stageIndex < studentStages.size()) {
+            StageEntry stage = studentStages.get(stageIndex);
+            stage.setAccord(!stage.isAccord());
+        }
+    }
+
     private void loadFromCsv() throws IOException {
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("stages2025-anonyme.csv")) {
             if (is == null) {
