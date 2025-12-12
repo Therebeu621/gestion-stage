@@ -1,5 +1,10 @@
-/home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/filter/ForceSessionFilter.java
-/home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/controller/StageController.java
-/home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/StageService.java
-/home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/model/StageEntry.java
-/home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/MvcApplication.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/model/UserSession.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/model/User.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/model/StageEntry.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/controller/StageController.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/repository/UserRepository.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/AuthService.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/controller/AuthController.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/filter/ForceSessionFilter.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/MvcApplication.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/StageService.java
