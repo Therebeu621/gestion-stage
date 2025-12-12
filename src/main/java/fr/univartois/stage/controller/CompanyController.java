@@ -29,7 +29,9 @@ public class CompanyController {
     @View("company_detail.jsp")
     public void companyDetail(@PathParam("name") String name) {
         StageEntry companyInfo = stageService.findOneCompany(name);
-        List<StageEntry> stages = stageService.findByCompany(name);
+        List<StageEntry> stages = stageService.findByCompany(name).stream()
+                .filter(StageEntry::isAccord)
+                .toList();
 
         models.put("companyName", name);
         models.put("companyInfo", companyInfo); // For address, etc.

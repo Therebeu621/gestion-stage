@@ -12,17 +12,18 @@ public class StageEntry {
     private final String nomEtablissementAccueil;
     private final String communeEtablissement;
     private final String codePostal;
+    private final boolean accord;
 
     public StageEntry(String nomEtudiant,
-                      String prenomEtudiant,
-                      String mailUniversitaire,
-                      String dateDebut,
-                      String dateFin,
-                      String formation,
-                      String prenomEnseignantReferent,
-                      String nomEtablissementAccueil,
-                      String communeEtablissement,
-                      String codePostal) {
+            String prenomEtudiant,
+            String mailUniversitaire,
+            String dateDebut,
+            String dateFin,
+            String formation,
+            String prenomEnseignantReferent,
+            String nomEtablissementAccueil,
+            String communeEtablissement,
+            String codePostal) {
         this.nomEtudiant = nomEtudiant;
         this.prenomEtudiant = prenomEtudiant;
         this.mailUniversitaire = mailUniversitaire;
@@ -33,6 +34,11 @@ public class StageEntry {
         this.nomEtablissementAccueil = nomEtablissementAccueil;
         this.communeEtablissement = communeEtablissement;
         this.codePostal = codePostal;
+        this.accord = Math.random() > 0.5; // Simulation : 50% d'accord
+    }
+
+    public boolean isAccord() {
+        return accord;
     }
 
     public String getNomEtudiant() {
