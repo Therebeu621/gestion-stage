@@ -1,0 +1,21 @@
+# Maven
+target/
+*.log
+*.war
+*.ear
+*.tar.gz
+dependency-reduced-pom.xml
+hs_err_pid*
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+*.settings/
+bin/
+
+# OS
+.DS_Store
+Thumbs.db

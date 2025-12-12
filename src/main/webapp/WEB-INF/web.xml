@@ -7,6 +7,19 @@
 
     <display-name>mon-futur-stage</display-name>
 
+    <listener>
+        <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>ForceSessionFilter</filter-name>
+        <filter-class>fr.univartois.stage.filter.ForceSessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ForceSessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- Jersey + Krazo servlet -->
     <servlet>
         <servlet-name>mvc</servlet-name>
