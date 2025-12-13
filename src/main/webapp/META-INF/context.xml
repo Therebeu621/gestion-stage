@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
+    <!--
     <Resource name="jdbc/StageDB"
               auth="Container"
               type="javax.sql.DataSource"
@@ -19,4 +20,17 @@
            userCredCol="password"
            userRoleTable="users"
            roleNameCol="role_name"/>
+    -->
+
+    <!-- Portable User Configuration -->
+    <Resource name="UserDatabase"
+              auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="webapps/mon-futur-stage/WEB-INF/users.xml" 
+              readonly="true"/>
+              
+    <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+           resourceName="UserDatabase"/>
 </Context>
