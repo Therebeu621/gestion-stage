@@ -36,7 +36,7 @@ public class AuthController implements Serializable {
         }
         // Sync our CDI bean
         userSession.logout();
-        return "redirect:/auth/landing";
+        return "redirect:/";
     }
 
     @GET
