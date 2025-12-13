@@ -52,3 +52,38 @@ The application loads internship data from `src/main/resources/stages2025-anonym
 - `src/main/java`: Java source code (Controllers, Services, Models).
 - `src/main/webapp`: Web resources (JSP views, `web.xml`, `beans.xml`).
 - `src/main/resources`: Configuration and data files.
+
+## Security & Authentication
+
+This application uses **Jakarta EE Container-Managed Security**. It does not require an external database for user accounts. Instead, it relies entirely on the Apache Tomcat server to handle login.
+
+### How it Works
+1.  **Authentication**: Provided by Tomcat. You define users in Tomcat's configuration files.
+2.  **Authorization**: Controlled by `web.xml`. Only users with the role `STUDENT` can access the stage data.
+3.  **Data Mapping**: The application links your **Login Username** to the **Student Data** in the CSV file (`stages2025-anonyme.csv`).
+
+### Setup Instructions
+
+To use the application, you must create a user in your Tomcat installation.
+
+1.  Open your Tomcat configuration file: `$CATALINA_HOME/conf/tomcat-users.xml`.
+2.  Add the `STUDENT` role and a user.
+    > **IMPORTANT**: You MUST use a student's **Email Address** as the `username`. This is how the application knows which stages to show you.
+
+    **Example Configuration**:
+    ```xml
+    <tomcat-users>
+      <!-- Define the role -->
+      <role rolename="STUDENT"/>
+      
+      <!-- Define a user. 
+           username: MUST match an email in the CSV file (e.g., etudiant@example.com) 
+           password: can be anything you want
+      -->
+      <user username="etudiant@example.com" password="password" roles="STUDENT"/>
+    </tomcat-users>
+    ```
+
+3.  Restart Tomcat.
+4.  Access the application at [http://localhost:8080/mon-futur-stage/mvc/my-stages](http://localhost:8080/mon-futur-stage/mvc/my-stages).
+5.  Log in with the email and password you configured.
