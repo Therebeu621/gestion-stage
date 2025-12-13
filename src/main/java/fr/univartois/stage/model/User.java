@@ -8,7 +8,7 @@ public class User {
     private Role role;
 
     public enum Role {
-        ADMIN, RESPONSIBLE, STUDENT
+        ADMIN, STUDENT
     }
 
     public User(String login, String password, String prenom, Role role) {

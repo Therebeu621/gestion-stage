@@ -207,7 +207,7 @@ public class StageService {
                 .orElse(null);
     }
 
-    public int importStages(InputStream inputStream, String responsableName) throws IOException {
+    public int importStages(InputStream inputStream) throws IOException {
         int count = 0;
         List<StageEntry> newStages = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -229,13 +229,6 @@ public class StageService {
                 List<String> values = parseLine(line);
                 while (values.size() < 10) {
                     values.add("");
-                }
-
-                // Filtering: Check if responsible matches 'Prénom Enseignant référent' (column
-                // 6)
-                String referent = values.get(6);
-                if (referent == null || !referent.equalsIgnoreCase(responsableName)) {
-                    continue;
                 }
 
                 boolean accord = false;
@@ -267,15 +260,9 @@ public class StageService {
                     count++;
                 }
             }
-            // Fusion des données : on remplace uniquement les stages du responsable
-            // connecté
+            // Remplacement global de la liste
             if (!newStages.isEmpty()) {
-                List<StageEntry> mergedStages = new ArrayList<>(stages);
-                // Supprime les anciens stages gérés par ce responsable
-                mergedStages.removeIf(s -> responsableName.equalsIgnoreCase(s.getPrenomEnseignantReferent()));
-                // Ajoute les nouveaux stages importés
-                mergedStages.addAll(newStages);
-                stages = mergedStages;
+                stages = newStages;
             }
         }
         return count;

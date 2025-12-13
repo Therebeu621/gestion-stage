@@ -267,7 +267,7 @@
                 </div>
             </c:if>
 
-            <c:if test="${user.role == 'ADMIN' or user.role == 'RESPONSIBLE'}">
+            <c:if test="${user.role == 'ADMIN'}">
                 <div class="card" style="margin-bottom: 24px; padding: 16px;">
                     <div style="display:flex; justify-content: space-between; align-items: center;">
                         <h3 style="margin: 0;">Import des données PStage</h3>

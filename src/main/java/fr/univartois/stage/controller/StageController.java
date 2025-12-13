@@ -64,8 +64,6 @@ public class StageController {
 
         // Filter companies if formations are selected
         if (formations != null && !formations.isEmpty()) {
-            // "en meme temps" -> Intersection filter: Company must have ALL selected
-            // formations
             companies.removeIf(c -> !c.getFormationSet().containsAll(formations));
         }
 
@@ -101,7 +99,7 @@ public class StageController {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
 
     public String upload(@jakarta.ws.rs.core.Context HttpServletRequest request) {
-        if (!userSession.isLoggedIn()) {
+        if (!userSession.isLoggedIn() || !request.isUserInRole("ADMIN")) {
             return "redirect:/auth/landing";
         }
 
@@ -109,8 +107,7 @@ public class StageController {
             Part filePart = request.getPart("file");
             if (filePart != null) {
                 try (InputStream inputStream = filePart.getInputStream()) {
-                    String principalName = request.getUserPrincipal().getName();
-                    int count = stageService.importStages(inputStream, principalName);
+                    int count = stageService.importStages(inputStream);
                     models.put("message", count + " stages importés avec succès.");
                 }
             } else {

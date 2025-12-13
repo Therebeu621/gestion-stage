@@ -14,10 +14,6 @@ public class UserSession implements Serializable {
         return user != null;
     }
 
-    public boolean isResponsible() {
-        return isLoggedIn() && user.getRole() == User.Role.RESPONSIBLE;
-    }
-
     public User getUser() {
         return user;
     }
