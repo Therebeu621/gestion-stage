@@ -46,6 +46,7 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>STUDENT</role-name>
+            <role-name>ADMIN</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -60,6 +61,9 @@
 
     <security-role>
         <role-name>STUDENT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ADMIN</role-name>
     </security-role>
 
 </web-app>

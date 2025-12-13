@@ -235,101 +235,131 @@
                         </c:choose>
                     </div>
                 </div>
+            </div>
 
-                <c:set var="currentSort" value="${empty sortField ? 'name' : sortField}" />
-                <c:set var="currentDir" value="${empty sortDir ? 'asc' : sortDir}" />
-                <c:set var="nameNextDir" value="${currentSort eq 'name' and currentDir eq 'asc' ? 'desc' : 'asc'}" />
-                <c:set var="cityNextDir" value="${currentSort eq 'city' and currentDir eq 'asc' ? 'desc' : 'asc'}" />
-                <c:set var="levelNextDir" value="${currentSort eq 'level' and currentDir eq 'asc' ? 'desc' : 'asc'}" />
+            <c:if test="${user.role == 'ADMIN'}">
+                <div class="card" style="margin-bottom: 24px; padding: 16px;">
+                    <form action="${pageContext.request.contextPath}/mvc/" method="get"
+                        style="display: flex; gap: 20px; align-items: center;">
+                        <strong style="color: var(--accent);">Filtrer par formation :</strong>
 
-                <div class="card">
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="sortable" onclick="window.location.href='?sort=name&dir=${nameNextDir}'">
-                                        <span class="th-content">
-                                            <span>Entreprise</span>
-                                            <span class="sort-icon sort-chip">
-                                                <c:choose>
-                                                    <c:when test="${currentSort eq 'name' and currentDir eq 'asc'}">
-                                                        &#9650;
-                                                    </c:when>
-                                                    <c:when test="${currentSort eq 'name' and currentDir eq 'desc'}">
-                                                        &#9660;
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        &#8645;
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </span>
-                                        </span>
-                                    </th>
-                                    <th class="sortable" onclick="window.location.href='?sort=city&dir=${cityNextDir}'">
-                                        <span class="th-content">
-                                            <span>Commune</span>
-                                            <span class="sort-icon sort-chip">
-                                                <c:choose>
-                                                    <c:when test="${currentSort eq 'city' and currentDir eq 'asc'}">
-                                                        &#9650;
-                                                    </c:when>
-                                                    <c:when test="${currentSort eq 'city' and currentDir eq 'desc'}">
-                                                        &#9660;
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        &#8645;
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </span>
-                                        </span>
-                                    </th>
-                                    <th>Code Postal</th>
-                                    <th class="sortable"
-                                        onclick="window.location.href='?sort=level&dir=${levelNextDir}'">
-                                        <span class="th-content">
-                                            <span>Niveaux</span>
-                                            <span class="sort-icon sort-chip">
-                                                <c:choose>
-                                                    <c:when test="${currentSort eq 'level' and currentDir eq 'asc'}">
-                                                        &#9650;
-                                                    </c:when>
-                                                    <c:when test="${currentSort eq 'level' and currentDir eq 'desc'}">
-                                                        &#9660;
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        &#8645;
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </span>
-                                        </span>
-                                    </th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:if test="${empty stages}">
-                                    <tr>
-                                        <td class="empty" colspan="5">Aucune entreprise visible pour le moment.</td>
-                                    </tr>
-                                </c:if>
-                                <c:forEach var="stage" items="${stages}">
-                                    <tr>
-                                        <td data-label="Entreprise"><strong>${stage.name}</strong></td>
-                                        <td data-label="Commune">${stage.city}</td>
-                                        <td data-label="Code Postal">${stage.zip}</td>
-                                        <td data-label="Niveaux">${stage.formations}</td>
-                                        <td data-label="Action">
-                                            <a class="action-btn"
-                                                href="${pageContext.request.contextPath}/mvc/company/${stage.name}">
-                                                Voir fiche détaillée
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" name="formation" value="L3" ${not empty selectedFormations and
+                                selectedFormations.contains('L3') ? 'checked' : '' }> L3
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" name="formation" value="M1" ${not empty selectedFormations and
+                                selectedFormations.contains('M1') ? 'checked' : '' }> M1
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" name="formation" value="M2 ILI" ${not empty selectedFormations and
+                                selectedFormations.contains('M2 ILI') ? 'checked' : '' }> M2 ILI
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" name="formation" value="M2 ILJ" ${not empty selectedFormations and
+                                selectedFormations.contains('M2 ILJ') ? 'checked' : '' }> M2 ILJ
+                        </label>
+
+                        <button type="submit" class="action-btn" style="border: none; cursor: pointer;">Valider</button>
+                        <a href="${pageContext.request.contextPath}/mvc/"
+                            style="color: var(--muted); text-decoration: none; font-size: 0.9em;">Réinitialiser</a>
+                    </form>
                 </div>
+            </c:if>
+
+            <c:set var="currentSort" value="${empty sortField ? 'name' : sortField}" />
+            <c:set var="currentDir" value="${empty sortDir ? 'asc' : sortDir}" />
+            <c:set var="nameNextDir" value="${currentSort eq 'name' and currentDir eq 'asc' ? 'desc' : 'asc'}" />
+            <c:set var="cityNextDir" value="${currentSort eq 'city' and currentDir eq 'asc' ? 'desc' : 'asc'}" />
+            <c:set var="levelNextDir" value="${currentSort eq 'level' and currentDir eq 'asc' ? 'desc' : 'asc'}" />
+
+            <div class="card">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="window.location.href='?sort=name&dir=${nameNextDir}'">
+                                    <span class="th-content">
+                                        <span>Entreprise</span>
+                                        <span class="sort-icon sort-chip">
+                                            <c:choose>
+                                                <c:when test="${currentSort eq 'name' and currentDir eq 'asc'}">
+                                                    &#9650;
+                                                </c:when>
+                                                <c:when test="${currentSort eq 'name' and currentDir eq 'desc'}">
+                                                    &#9660;
+                                                </c:when>
+                                                <c:otherwise>
+                                                    &#8645;
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th class="sortable" onclick="window.location.href='?sort=city&dir=${cityNextDir}'">
+                                    <span class="th-content">
+                                        <span>Commune</span>
+                                        <span class="sort-icon sort-chip">
+                                            <c:choose>
+                                                <c:when test="${currentSort eq 'city' and currentDir eq 'asc'}">
+                                                    &#9650;
+                                                </c:when>
+                                                <c:when test="${currentSort eq 'city' and currentDir eq 'desc'}">
+                                                    &#9660;
+                                                </c:when>
+                                                <c:otherwise>
+                                                    &#8645;
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th>Code Postal</th>
+                                <th class="sortable" onclick="window.location.href='?sort=level&dir=${levelNextDir}'">
+                                    <span class="th-content">
+                                        <span>Niveaux</span>
+                                        <span class="sort-icon sort-chip">
+                                            <c:choose>
+                                                <c:when test="${currentSort eq 'level' and currentDir eq 'asc'}">
+                                                    &#9650;
+                                                </c:when>
+                                                <c:when test="${currentSort eq 'level' and currentDir eq 'desc'}">
+                                                    &#9660;
+                                                </c:when>
+                                                <c:otherwise>
+                                                    &#8645;
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </span>
+                                    </span>
+                                </th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:if test="${empty stages}">
+                                <tr>
+                                    <td class="empty" colspan="5">Aucune entreprise visible pour le moment.</td>
+                                </tr>
+                            </c:if>
+                            <c:forEach var="stage" items="${stages}">
+                                <tr>
+                                    <td data-label="Entreprise"><strong>${stage.name}</strong></td>
+                                    <td data-label="Commune">${stage.city}</td>
+                                    <td data-label="Code Postal">${stage.zip}</td>
+                                    <td data-label="Niveaux">${stage.formations}</td>
+                                    <td data-label="Action">
+                                        <a class="action-btn"
+                                            href="${pageContext.request.contextPath}/mvc/company/${stage.name}">
+                                            Voir fiche détaillée
+                                        </a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             </div>
         </body>
 

@@ -35,7 +35,15 @@ public class ForceSessionFilter implements Filter {
             if (principal != null) {
                 // If user is authenticated by container but not yet in UserSession
                 if (!userSession.isLoggedIn() || !principal.getName().equals(userSession.getUser().getLogin())) {
-                    userRepository.findByLogin(principal.getName()).ifPresent(userSession::setUser);
+                    userRepository.findByLogin(principal.getName()).ifPresent(u -> {
+                        // Dynamically update role based on container security
+                        if (req.isUserInRole("ADMIN")) {
+                            u.setRole(fr.univartois.stage.model.User.Role.ADMIN);
+                        } else if (req.isUserInRole("STUDENT")) {
+                            u.setRole(fr.univartois.stage.model.User.Role.STUDENT);
+                        }
+                        userSession.setUser(u);
+                    });
                 }
             }
         }

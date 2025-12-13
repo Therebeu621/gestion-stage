@@ -30,7 +30,8 @@ public class StageController {
     @View("stages.jsp")
     public void list(
             @jakarta.ws.rs.QueryParam("sort") String sort,
-            @jakarta.ws.rs.QueryParam("dir") String dir) {
+            @jakarta.ws.rs.QueryParam("dir") String dir,
+            @jakarta.ws.rs.QueryParam("formation") java.util.List<String> formations) {
         // Retrieve all stages
         var allStages = stageService.findAll();
 
@@ -55,6 +56,13 @@ public class StageController {
 
         var companies = new java.util.ArrayList<>(grouped.values());
 
+        // Filter companies if formations are selected
+        if (formations != null && !formations.isEmpty()) {
+            // "en meme temps" -> Intersection filter: Company must have ALL selected
+            // formations
+            companies.removeIf(c -> !c.getFormationSet().containsAll(formations));
+        }
+
         // Sorting
         String sortField = (sort == null || sort.isBlank()) ? "name" : sort.toLowerCase();
         boolean desc = "desc".equalsIgnoreCase(dir);
@@ -75,6 +83,7 @@ public class StageController {
         models.put("stages", companies);
         models.put("sortField", sortField);
         models.put("sortDir", desc ? "desc" : "asc");
+        models.put("selectedFormations", formations); // Pass back to view
 
         if (userSession.isLoggedIn()) {
             models.put("user", userSession.getUser());
@@ -113,6 +122,10 @@ public class StageController {
 
         public String getFormations() {
             return String.join(", ", new java.util.TreeSet<>(formationSet));
+        }
+
+        public java.util.Set<String> getFormationSet() {
+            return formationSet;
         }
 
         // Needed for JSP EL compatibility if it expects 'nomEtablissementAccueil' style
