@@ -2,6 +2,8 @@ fr/univartois/stage/MvcApplication.class
 fr/univartois/stage/listener/DatabaseInitializer.class
 fr/univartois/stage/service/AuthService.class
 fr/univartois/stage/model/UserSession.class
+fr/univartois/stage/model/Entreprise.class
+fr/univartois/stage/controller/EntrepriseController.class
 fr/univartois/stage/controller/CompanyController.class
 fr/univartois/stage/model/StageEntry.class
 fr/univartois/stage/repository/UserRepository.class
@@ -12,5 +14,5 @@ fr/univartois/stage/controller/StageController.class
 fr/univartois/stage/controller/AuthController.class
 fr/univartois/stage/model/User$Role.class
 fr/univartois/stage/filter/ForceSessionFilter.class
-fr/univartois/stage/model/User.class
 fr/univartois/stage/service/LdapService.class
+fr/univartois/stage/model/User.class

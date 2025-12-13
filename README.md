@@ -40,7 +40,8 @@ This will create `target/mon-futur-stage.war`.
     $CATALINA_HOME/bin/startup.sh
     ```
 4.  Access the application at:
-    [http://localhost:8080/mon-futur-stage/mvc/](http://localhost:8080/mon-futur-stage/mvc/)
+    - Stages List: [http://localhost:8080/mon-futur-stage/mvc/](http://localhost:8080/mon-futur-stage/mvc/)
+    - Companies List: [http://localhost:8080/mon-futur-stage/mvc/entreprises](http://localhost:8080/mon-futur-stage/mvc/entreprises)
 
 ## Data Configuration
 

@@ -162,4 +162,45 @@ public class StageService {
                 "Etablissement d'Accueil - Commune",
                 "Code Postal");
     }
+
+    // --- Entreprise Aggregation Logic ---
+
+    public List<fr.univartois.stage.model.Entreprise> findAllEntreprises() {
+        java.util.Map<String, fr.univartois.stage.model.Entreprise> map = new java.util.HashMap<>();
+
+        for (StageEntry stage : stages) {
+            String name = stage.getNomEtablissementAccueil();
+            if (name == null || name.isBlank())
+                continue;
+
+            // Compute ID consistent with Entreprise logic (or reuse existing instance)
+            if (!map.containsKey(name)) {
+                // We create the entreprise using the first entry found for location
+                map.put(name, new fr.univartois.stage.model.Entreprise(
+                        name,
+                        stage.getCommuneEtablissement(),
+                        stage.getCodePostal()));
+            }
+            // Add stage to entreprise (only if accord is true?)
+            // The requirement says "La fiche détaillée liste des étudiants qui ont donné
+            // leur accord"
+            // So we add them all here, but filter on display? Or filter here?
+            // Let's filter here to be safe and cleaner
+            if (stage.isAccord()) {
+                map.get(name).addStage(stage);
+            }
+        }
+
+        List<fr.univartois.stage.model.Entreprise> result = new ArrayList<>(map.values());
+        // Sort by name by default
+        result.sort((e1, e2) -> e1.getNom().compareToIgnoreCase(e2.getNom()));
+        return result;
+    }
+
+    public fr.univartois.stage.model.Entreprise getEntreprise(String id) {
+        return findAllEntreprises().stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 }
