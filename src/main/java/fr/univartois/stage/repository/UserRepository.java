@@ -2,22 +2,36 @@ package fr.univartois.stage.repository;
 
 import fr.univartois.stage.model.User;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @ApplicationScoped
 public class UserRepository {
 
-    private final Map<String, User> users = new HashMap<>();
-
-    public UserRepository() {
-        // Default users for testing
-        users.put("johan", new User("johan", "password", "Johan", User.Role.RESPONSIBLE));
-        users.put("admin", new User("admin", "admin", "Admin", User.Role.ADMIN));
-    }
+    @jakarta.annotation.Resource(name = "jdbc/StageDB")
+    private javax.sql.DataSource dataSource;
 
     public Optional<User> findByLogin(String login) {
-        return Optional.ofNullable(users.get(login));
+        String sql = "SELECT login, password, role_name, prenom, email FROM users WHERE login = ?";
+        try (java.sql.Connection conn = dataSource.getConnection();
+                java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, login);
+            try (java.sql.ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String roleName = rs.getString("role_name");
+                    User.Role role = User.Role.valueOf(roleName);
+                    User user = new User(
+                            rs.getString("login"),
+                            rs.getString("password"),
+                            rs.getString("prenom"),
+                            role);
+                    user.setEmail(rs.getString("email"));
+                    return Optional.of(user);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 }

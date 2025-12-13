@@ -17,12 +17,27 @@ import java.io.IOException;
  */
 public class ForceSessionFilter implements Filter {
 
+    @jakarta.inject.Inject
+    private fr.univartois.stage.model.UserSession userSession;
+
+    @jakarta.inject.Inject
+    private fr.univartois.stage.repository.UserRepository userRepository;
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         if (request instanceof HttpServletRequest) {
-            ((HttpServletRequest) request).getSession(true);
+            HttpServletRequest req = (HttpServletRequest) request;
+            req.getSession(true); // Force session creation
+
+            java.security.Principal principal = req.getUserPrincipal();
+            if (principal != null) {
+                // If user is authenticated by container but not yet in UserSession
+                if (!userSession.isLoggedIn() || !principal.getName().equals(userSession.getUser().getLogin())) {
+                    userRepository.findByLogin(principal.getName()).ifPresent(userSession::setUser);
+                }
+            }
         }
 
         chain.doFilter(request, response);

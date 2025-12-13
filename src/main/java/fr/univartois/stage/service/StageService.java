@@ -44,6 +44,7 @@ public class StageService {
         }
         return stages.stream()
                 .filter(s -> companyName.equalsIgnoreCase(s.getNomEtablissementAccueil()))
+                .filter(StageEntry::isAccord)
                 .toList();
     }
 
@@ -90,8 +91,14 @@ public class StageService {
                 List<StageEntry> loaded = new ArrayList<>();
                 for (String line : lines.subList(1, lines.size())) {
                     List<String> values = parseLine(line);
-                    while (values.size() < EXPECTED_COLUMNS) {
+                    while (values.size() < 10) { // Ensure at least 10 columns
                         values.add("");
+                    }
+
+                    // Read 11th column for 'accord' if present
+                    boolean accord = false;
+                    if (values.size() > 10) {
+                        accord = Boolean.parseBoolean(values.get(10));
                     }
 
                     loaded.add(new StageEntry(
@@ -104,7 +111,8 @@ public class StageService {
                             values.get(6),
                             values.get(7),
                             values.get(8),
-                            values.get(9)));
+                            values.get(9),
+                            accord));
                 }
 
                 stages = loaded;

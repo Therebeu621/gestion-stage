@@ -23,7 +23,8 @@ public class StageEntry {
             String prenomEnseignantReferent,
             String nomEtablissementAccueil,
             String communeEtablissement,
-            String codePostal) {
+            String codePostal,
+            boolean accord) {
         this.nomEtudiant = nomEtudiant;
         this.prenomEtudiant = prenomEtudiant;
         this.mailUniversitaire = mailUniversitaire;
@@ -34,7 +35,7 @@ public class StageEntry {
         this.nomEtablissementAccueil = nomEtablissementAccueil;
         this.communeEtablissement = communeEtablissement;
         this.codePostal = codePostal;
-        this.accord = Math.random() > 0.5; // Simulation : 50% d'accord
+        this.accord = accord;
     }
 
     public boolean isAccord() {

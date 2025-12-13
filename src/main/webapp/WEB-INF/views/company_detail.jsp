@@ -7,109 +7,152 @@
             <meta charset="UTF-8">
             <title>Détails Entreprise - ${companyName}</title>
             <style>
+                :root {
+                    --bg: #0b1220;
+                    --card: rgba(15, 23, 42, 0.9);
+                    --border: rgba(148, 163, 184, 0.08);
+                    --text: #e2e8f0;
+                    --muted: #94a3b8;
+                    --accent: #0ea5e9;
+                    --accent-2: #06b6d4;
+                }
+
+                * {
+                    box-sizing: border-box;
+                }
+
                 body {
-                    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-                    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
                     margin: 0;
-                    padding: 40px;
                     min-height: 100vh;
+                    background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.12), transparent 35%),
+                        radial-gradient(circle at 80% 10%, rgba(6, 182, 212, 0.12), transparent 30%),
+                        linear-gradient(135deg, #0b1220 0%, #0f172a 50%, #0b1220 100%);
+                    color: var(--text);
+                    display: flex;
+                    justify-content: center;
+                    padding: 40px 20px;
                 }
 
                 .container {
+                    width: 100%;
                     max-width: 900px;
-                    margin: 0 auto;
-                    background: white;
+                    background: var(--card);
                     padding: 40px;
-                    border-radius: 12px;
-                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                    border-radius: 18px;
+                    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.4);
+                    border: 1px solid var(--border);
+                    backdrop-filter: blur(8px);
                 }
 
                 header {
-                    border-bottom: 2px solid #edf2f7;
-                    padding-bottom: 20px;
-                    margin-bottom: 30px;
+                    border-bottom: 1px solid var(--border);
+                    padding-bottom: 24px;
+                    margin-bottom: 32px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                 }
 
                 h1 {
-                    color: #2d3748;
+                    color: #fff;
                     margin: 0;
                     font-size: 2rem;
+                    letter-spacing: -0.02em;
                 }
 
                 .back-link {
                     text-decoration: none;
-                    color: #4facfe;
+                    color: var(--accent);
                     font-weight: 600;
+                    padding: 8px 16px;
+                    border-radius: 8px;
+                    background: rgba(14, 165, 233, 0.1);
+                    transition: all 0.2s ease;
+                }
+
+                .back-link:hover {
+                    background: rgba(14, 165, 233, 0.2);
+                    color: #38bdf8;
                 }
 
                 .info-card {
-                    background: #f8fafc;
-                    padding: 20px;
-                    border-radius: 8px;
-                    margin-bottom: 30px;
-                    border: 1px solid #e2e8f0;
+                    background: rgba(255, 255, 255, 0.03);
+                    padding: 24px;
+                    border-radius: 12px;
+                    margin-bottom: 32px;
+                    border: 1px solid var(--border);
                 }
 
                 .info-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                    gap: 20px;
+                    gap: 24px;
                 }
 
                 .info-item label {
                     display: block;
-                    color: #718096;
-                    font-size: 0.875rem;
-                    margin-bottom: 5px;
+                    color: var(--muted);
+                    font-size: 0.75rem;
+                    margin-bottom: 6px;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
+                    letter-spacing: 0.08em;
+                    font-weight: 700;
                 }
 
                 .info-item span {
-                    color: #2d3748;
+                    color: #fff;
                     font-weight: 600;
-                    font-size: 1.125rem;
+                    font-size: 1.1rem;
                 }
 
                 h2 {
-                    color: #4a5568;
+                    color: var(--text);
                     margin-bottom: 20px;
-                    font-size: 1.5rem;
+                    font-size: 1.4rem;
+                    border-left: 4px solid var(--accent);
+                    padding-left: 12px;
+                }
+
+                .table-wrap {
+                    width: 100%;
+                    overflow: hidden;
+                    border-radius: 12px;
+                    border: 1px solid var(--border);
                 }
 
                 table {
                     width: 100%;
                     border-collapse: collapse;
-                    background: white;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                    color: var(--text);
+                }
+
+                thead {
+                    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
                 }
 
                 th {
-                    background: #edf2f7;
-                    color: #4a5568;
-                    font-weight: 600;
-                    padding: 15px;
+                    padding: 14px 16px;
                     text-align: left;
-                    border-bottom: 2px solid #e2e8f0;
+                    color: #0b1220;
+                    font-weight: 800;
+                    font-size: 0.85rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
                 }
 
                 td {
-                    padding: 15px;
-                    border-bottom: 1px solid #edf2f7;
-                    color: #2d3748;
+                    padding: 14px 16px;
+                    border-bottom: 1px solid var(--border);
+                    font-size: 0.95rem;
                 }
 
-                tr:last-child td {
+                tbody tr:last-child td {
                     border-bottom: none;
                 }
 
-                tr:hover {
-                    background-color: #f7fafc;
+                tbody tr:hover {
+                    background: rgba(255, 255, 255, 0.03);
                 }
             </style>
         </head>
@@ -118,7 +161,9 @@
             <div class="container">
                 <header>
                     <h1>${companyName}</h1>
-                    <a href="${pageContext.request.contextPath}/mvc/" class="back-link">← Retour à la liste</a>
+                    <a href="${pageContext.request.contextPath}/mvc/" class="back-link">
+                        &#8592; Retour à la liste
+                    </a>
                 </header>
 
                 <c:if test="${not empty companyInfo}">
@@ -137,24 +182,36 @@
                 </c:if>
 
                 <h2>Historique des stagiaires</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Étudiant</th>
-                            <th>Formation</th>
-                            <th>Période</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="stage" items="${stages}">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
                             <tr>
-                                <td>${stage.prenomEtudiant} ${stage.nomEtudiant}</td>
-                                <td>${stage.formation}</td>
-                                <td>Du ${stage.dateDebut} au ${stage.dateFin}</td>
+                                <th>Étudiant</th>
+                                <th>Formation</th>
+                                <th>Période</th>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="stage" items="${stages}">
+                                <tr>
+                                    <td>
+                                        <strong style="color: #fff;">${stage.prenomEtudiant}
+                                            ${stage.nomEtudiant}</strong>
+                                    </td>
+                                    <td>
+                                        <span
+                                            style="background: rgba(14, 165, 233, 0.15); color: #38bdf8; padding: 4px 10px; border-radius: 99px; font-size: 0.85em; font-weight: 600;">
+                                            ${stage.formation}
+                                        </span>
+                                    </td>
+                                    <td style="color: var(--muted); font-size: 0.9em;">
+                                        Du ${stage.dateDebut} au ${stage.dateFin}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </body>
 

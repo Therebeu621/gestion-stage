@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource name="jdbc/StageDB"
+              auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal="20"
+              maxIdle="10"
+              maxWaitMillis="-1"
+              username="postgres"
+              password="password"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/mon_futur_stage"/>
+    
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           dataSourceName="jdbc/StageDB"
+           localDataSource="true"
+           userTable="users"
+           userNameCol="login"
+           userCredCol="password"
+           userRoleTable="users"
+           roleNameCol="role_name"/>
+</Context>
