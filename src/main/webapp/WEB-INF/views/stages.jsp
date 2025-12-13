@@ -211,7 +211,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
                         <h1>Stages 2025</h1>
-                        <p class="subtitle">Données chargées depuis le fichier CSV fourni.</p>
+
                     </div>
                     <div>
                         <c:choose>
