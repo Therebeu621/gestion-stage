@@ -1,4 +1,4 @@
-<%@ page import="javax.naming.InitialContext" %>
+<!-- <%@ page import="javax.naming.InitialContext" %>
     <%@ page import="javax.sql.DataSource" %>
         <%@ page import="java.sql.Connection" %>
             <%@ page import="java.sql.PreparedStatement" %>
@@ -47,4 +47,4 @@
                             </table>
                         </body>
 
-                        </html>
+                        </html> -->

@@ -14,30 +14,26 @@ public class UserRepository {
             return Optional.empty();
         }
 
-        // 100% Tomcat Mode:
-        // We assume the user has been authenticated by the Tomcat Realm (e.g.
-        // MemoryRealm).
-        // We construct the User object directly from the login.
-        // Convention: The login IS the email.
+        // Mode Tomcat 100%:
+        // On suppose l'utilisateur authentifié par le Realm Tomcat (ex: MemoryRealm).
+        // On construit l'objet User via le login.
+        // Convention: Login = Email.
 
-        // Default role: STUDENT (The actual authorization is handled by web.xml
-        // constraints,
-        // this object is just for the application logic/session).
+        // Rôle par défaut: STUDENT (Auth réelle gérée par web.xml,
+        // cet objet ne sert qu'à la logique appli/session).
         User.Role role = User.Role.STUDENT;
 
-        // In a real no-DB app, we might check if login is "admin" to set role ADMIN,
-        // but here we focus on the student use case.
         if ("admin".equalsIgnoreCase(login)) {
             role = User.Role.ADMIN;
         }
 
         User user = new User(
                 login,
-                "", // Password not needed here, handled by Tomcat
-                login, // Use login as placeholder for First Name
+                "", // Mot de passe géré par Tomcat
+                login, // Utilise login comme Prénom temporaire
                 role);
 
-        user.setEmail(login); // Crucial: login is mapped to email for CSV lookup
+        user.setEmail(login); // Crucial: login map vers email pour lookup CSV
 
         return Optional.of(user);
     }

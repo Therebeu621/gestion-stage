@@ -9,11 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Filter to force session creation.
- * This ensures the session cookie is set before the response is committed,
- * avoiding "Cannot create a session after the response has been committed"
- * errors
- * caused by late running JAX-RS filters (like Krazo CSRF).
+ * Filtre pour forcer la création de session.
+ * Évite les erreurs "Cannot create a session after the response has been
+ * committed"
+ * avec les filtres JAX-RS tardifs (ex: Krazo CSRF).
  */
 public class ForceSessionFilter implements Filter {
 
@@ -29,14 +28,14 @@ public class ForceSessionFilter implements Filter {
 
         if (request instanceof HttpServletRequest) {
             HttpServletRequest req = (HttpServletRequest) request;
-            req.getSession(true); // Force session creation
+            req.getSession(true); // Force création session
 
             java.security.Principal principal = req.getUserPrincipal();
             if (principal != null) {
-                // If user is authenticated by container but not yet in UserSession
+                // Si authentifié par conteneur mais pas encore dans UserSession
                 if (!userSession.isLoggedIn() || !principal.getName().equals(userSession.getUser().getLogin())) {
                     userRepository.findByLogin(principal.getName()).ifPresent(u -> {
-                        // Dynamically update role based on container security
+                        // Mise à jour dynamique du rôle selon sécurité conteneur
                         if (req.isUserInRole("ADMIN")) {
                             u.setRole(fr.univartois.stage.model.User.Role.ADMIN);
                         } else if (req.isUserInRole("STUDENT")) {

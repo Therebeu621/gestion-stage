@@ -21,20 +21,20 @@ public class AuthController implements Serializable {
     @GET
     @Path("login")
     public String showLoginForm() {
-        return "redirect:/login.jsp"; // Redirect to public JSP since it's no longer in WEB-INF
+        return "redirect:/login.jsp"; // Redirection vers JSP public (hors WEB-INF)
     }
 
     @GET
     @Path("logout")
     public String logout() {
         try {
-            // Invalidate Tomcat session (Standard Servlet Auth)
+            // Invalidation session Tomcat
             request.logout();
             request.getSession().invalidate();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // Sync our CDI bean
+        // Synchro bean CDI
         userSession.logout();
         return "redirect:/";
     }

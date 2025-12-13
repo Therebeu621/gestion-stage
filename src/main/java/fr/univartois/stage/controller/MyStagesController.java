@@ -33,7 +33,7 @@ public class MyStagesController {
     @View("my_stages.jsp")
     public void myStages() {
         if (!userSession.isLoggedIn() || userSession.getUser().getEmail() == null) {
-            return; // Or redirect to login
+            return; // Ou rediriger vers login
         }
 
         String email = userSession.getUser().getEmail();

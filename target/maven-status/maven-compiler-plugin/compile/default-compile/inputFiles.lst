@@ -7,7 +7,6 @@
 /home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/AuthService.java
 /home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/controller/StageController.java
 /home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/StageService.java
-/home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/listener/DatabaseInitializer.java
 /home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/controller/CompanyController.java
 /home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/model/User.java
 /home/cebi/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/LdapService.java

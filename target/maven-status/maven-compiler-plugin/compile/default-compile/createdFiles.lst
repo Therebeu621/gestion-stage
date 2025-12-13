@@ -1,5 +1,4 @@
 fr/univartois/stage/MvcApplication.class
-fr/univartois/stage/listener/DatabaseInitializer.class
 fr/univartois/stage/service/AuthService.class
 fr/univartois/stage/model/UserSession.class
 fr/univartois/stage/model/Entreprise.class

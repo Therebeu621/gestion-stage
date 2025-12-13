@@ -267,11 +267,15 @@ public class StageService {
                     count++;
                 }
             }
-            // Replace the existing list with the new filtered list
+            // Fusion des données : on remplace uniquement les stages du responsable
+            // connecté
             if (!newStages.isEmpty()) {
-                stages = newStages;
-            } else {
-                stages = newStages; // Replace with empty list if validation failed for all rows
+                List<StageEntry> mergedStages = new ArrayList<>(stages);
+                // Supprime les anciens stages gérés par ce responsable
+                mergedStages.removeIf(s -> responsableName.equalsIgnoreCase(s.getPrenomEnseignantReferent()));
+                // Ajoute les nouveaux stages importés
+                mergedStages.addAll(newStages);
+                stages = mergedStages;
             }
         }
         return count;

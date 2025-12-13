@@ -27,14 +27,14 @@ public class CompanyController {
     public void companyDetail(@PathParam("name") String name) {
         var entreprise = stageService.findEntrepriseByName(name);
         if (entreprise == null) {
-            // Fallback if not found, though in this context we assume it exists if link was
-            // clicked
-            // We could redirect or show 404, but for now we'll just return
-            return;
+            if (entreprise == null) {
+                // Entreprise non trouvée, arrêt du traitement
+                return;
+            }
         }
 
         models.put("companyName", entreprise.getNom());
         models.put("entreprise", entreprise);
-        // We can access stages via entreprise.getStages() in the view
+        // Les stages sont accessibles via entreprise.getStages() dans la vue
     }
 }

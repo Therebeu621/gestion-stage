@@ -12,11 +12,10 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
-import java.io.IOException;
+
 import java.io.InputStream;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Consumes;
-import jakarta.annotation.security.RolesAllowed; // If I want to enforce role here or check programmatically
 
 @Path("/")
 @Controller
@@ -100,9 +99,7 @@ public class StageController {
     @POST
     @Path("/import")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @POST
-    @Path("/import")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
+
     public String upload(@jakarta.ws.rs.core.Context HttpServletRequest request) {
         if (!userSession.isLoggedIn()) {
             return "redirect:/auth/landing";

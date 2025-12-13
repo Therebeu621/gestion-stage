@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Entreprise {
 
-    private String id; // Slugified name for URL
+    private String id; // Nom slugifié pour URL
     private String nom;
     private String adresse;
     private String codePostal;
@@ -22,7 +22,7 @@ public class Entreprise {
         this.commune = commune;
         this.codePostal = codePostal;
         this.id = slugify(nom);
-        // data generation
+        // Génération données
         generateFakeData();
     }
 
@@ -44,7 +44,7 @@ public class Entreprise {
         this.stages.add(stage);
     }
 
-    // Getters and Setters
+    // Générateurs accesseurs
     public String getId() {
         return id;
     }
