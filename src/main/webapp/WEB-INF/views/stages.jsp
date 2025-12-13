@@ -267,6 +267,39 @@
                 </div>
             </c:if>
 
+            <c:if test="${user.role == 'ADMIN' or user.role == 'RESPONSIBLE'}">
+                <div class="card" style="margin-bottom: 24px; padding: 16px;">
+                    <div style="display:flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Import des données PStage</h3>
+                    </div>
+                    <p class="subtitle" style="margin: 8px 0 16px;">
+                        Importez un fichier CSV pour mettre à jour la liste des stages. Seuls les stages dont vous êtes
+                        responsable seront importés.
+                    </p>
+
+                    <form action="${pageContext.request.contextPath}/mvc/import" method="post"
+                        enctype="multipart/form-data" style="display: flex; gap: 16px; align-items: center;">
+                        <input type="file" name="file" accept=".csv" required
+                            style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text);">
+                        <button type="submit" class="action-btn"
+                            style="border: none; cursor: pointer;">Importer</button>
+                    </form>
+
+                    <c:if test="${not empty message}">
+                        <div
+                            style="margin-top: 12px; padding: 10px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: 6px; color: #4ade80;">
+                            ${message}
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty error}">
+                        <div
+                            style="margin-top: 12px; padding: 10px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 6px; color: #f87171;">
+                            ${error}
+                        </div>
+                    </c:if>
+                </div>
+            </c:if>
+
             <c:set var="currentSort" value="${empty sortField ? 'name' : sortField}" />
             <c:set var="currentDir" value="${empty sortDir ? 'asc' : sortDir}" />
             <c:set var="nameNextDir" value="${currentSort eq 'name' and currentDir eq 'asc' ? 'desc' : 'asc'}" />

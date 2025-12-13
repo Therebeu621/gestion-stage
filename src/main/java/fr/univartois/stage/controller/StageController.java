@@ -10,6 +10,13 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
+import java.io.IOException;
+import java.io.InputStream;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Consumes;
+import jakarta.annotation.security.RolesAllowed; // If I want to enforce role here or check programmatically
 
 @Path("/")
 @Controller
@@ -90,6 +97,36 @@ public class StageController {
         }
     }
 
+    @POST
+    @Path("/import")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @POST
+    @Path("/import")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public String upload(@jakarta.ws.rs.core.Context HttpServletRequest request) {
+        if (!userSession.isLoggedIn()) {
+            return "redirect:/auth/landing";
+        }
+
+        try {
+            Part filePart = request.getPart("file");
+            if (filePart != null) {
+                try (InputStream inputStream = filePart.getInputStream()) {
+                    String principalName = request.getUserPrincipal().getName();
+                    int count = stageService.importStages(inputStream, principalName);
+                    models.put("message", count + " stages importés avec succès.");
+                }
+            } else {
+                models.put("error", "Aucun fichier reçu.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            models.put("error", "Erreur lors de l'import: " + e.getMessage());
+        }
+
+        return "redirect:/";
+    }
+
     public static class CompanyViewModel {
         private String name;
         private String city;
@@ -128,16 +165,7 @@ public class StageController {
             return formationSet;
         }
 
-        // Needed for JSP EL compatibility if it expects 'nomEtablissementAccueil' style
-        // from before?
-        // No, I will update JSP. But wait, I changed the List content type!
-        // The JSP currently uses: stage.nomEtablissementAccueil
-        // I should provide getNomEtablissementAccueil() alias to match JSP OR update
-        // JSP.
-        // It's cleaner to update JSP to use the new simple property names.
-
-        // Compatibility getters to minimize JSP breakage during transition if needed,
-        // but I will update JSP in the next step anyway.
+        // Compatibility getters for JSP
         public String getNomEtablissementAccueil() {
             return name;
         }

@@ -29,6 +29,11 @@
             <param-value>fr.univartois.stage.MvcApplication</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+        <multipart-config>
+            <max-file-size>20971520</max-file-size> <!-- 20MB -->
+            <max-request-size>41943040</max-request-size> <!-- 40MB -->
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
     </servlet>
 
     <servlet-mapping>

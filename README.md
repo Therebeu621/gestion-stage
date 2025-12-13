@@ -85,5 +85,5 @@ To use the application, you must create a user in your Tomcat installation.
     ```
 
 3.  Restart Tomcat.
-4.  Access the application at [http://localhost:8080/mon-futur-stage/mvc/my-stages](http://localhost:8080/mon-futur-stage/mvc/my-stages).
+4.  Access the application at [http://localhost:8080/mon-futur-stage/mvc/](http://localhost:8080/mon-futur-stage/mvc/).
 5.  Log in with the email and password you configured.

@@ -181,11 +181,7 @@ public class StageService {
                         stage.getCommuneEtablissement(),
                         stage.getCodePostal()));
             }
-            // Add stage to entreprise (only if accord is true?)
-            // The requirement says "La fiche détaillée liste des étudiants qui ont donné
-            // leur accord"
-            // So we add them all here, but filter on display? Or filter here?
-            // Let's filter here to be safe and cleaner
+            // Aggregation logic
             if (stage.isAccord()) {
                 map.get(name).addStage(stage);
             }
@@ -209,5 +205,75 @@ public class StageService {
                 .filter(e -> e.getNom().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public int importStages(InputStream inputStream, String responsableName) throws IOException {
+        int count = 0;
+        List<StageEntry> newStages = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            List<String> lines = reader.lines()
+                    .filter(line -> !line.isBlank())
+                    .toList();
+
+            if (lines.isEmpty()) {
+                return 0;
+            }
+
+            // Skip header if present (assuming first line is header)
+            int start = 0;
+            if (!lines.isEmpty() && lines.get(0).contains("Nom étudiant")) {
+                start = 1;
+            }
+
+            for (String line : lines.subList(start, lines.size())) {
+                List<String> values = parseLine(line);
+                while (values.size() < 10) {
+                    values.add("");
+                }
+
+                // Filtering: Check if responsible matches 'Prénom Enseignant référent' (column
+                // 6)
+                String referent = values.get(6);
+                if (referent == null || !referent.equalsIgnoreCase(responsableName)) {
+                    continue;
+                }
+
+                boolean accord = false;
+                if (values.size() > 10) {
+                    accord = Boolean.parseBoolean(values.get(10));
+                }
+
+                StageEntry newStage = new StageEntry(
+                        values.get(0),
+                        values.get(1),
+                        values.get(2),
+                        values.get(3),
+                        values.get(4),
+                        values.get(5),
+                        values.get(6),
+                        values.get(7),
+                        values.get(8),
+                        values.get(9),
+                        accord);
+
+                // Duplicate check
+                boolean exists = newStages.stream()
+                        .anyMatch(s -> s.getMailUniversitaire().equalsIgnoreCase(newStage.getMailUniversitaire()) &&
+                                s.getDateDebut().equals(newStage.getDateDebut()) &&
+                                s.getNomEtablissementAccueil().equalsIgnoreCase(newStage.getNomEtablissementAccueil()));
+
+                if (!exists) {
+                    newStages.add(newStage);
+                    count++;
+                }
+            }
+            // Replace the existing list with the new filtered list
+            if (!newStages.isEmpty()) {
+                stages = newStages;
+            } else {
+                stages = newStages; // Replace with empty list if validation failed for all rows
+            }
+        }
+        return count;
     }
 }
