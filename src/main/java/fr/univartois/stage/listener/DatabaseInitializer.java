@@ -11,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
-@WebListener
+//@WebListener
 public class DatabaseInitializer implements ServletContextListener {
 
     private static final Logger LOGGER = Logger.getLogger(DatabaseInitializer.class.getName());
