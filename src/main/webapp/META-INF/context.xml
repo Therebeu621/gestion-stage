@@ -8,7 +8,7 @@
               type="org.apache.catalina.UserDatabase"
               description="User database that can be updated and saved"
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
-              pathname="webapps/mon-futur-stage/WEB-INF/users.xml" 
+              pathname="conf/tomcat-users.xml" 
               readonly="true"/>
               
     <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
