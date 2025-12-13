@@ -203,4 +203,11 @@ public class StageService {
                 .findFirst()
                 .orElse(null);
     }
+
+    public fr.univartois.stage.model.Entreprise findEntrepriseByName(String name) {
+        return findAllEntreprises().stream()
+                .filter(e -> e.getNom().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+    }
 }

@@ -166,16 +166,29 @@
                     </a>
                 </header>
 
-                <c:if test="${not empty companyInfo}">
+                <c:if test="${not empty entreprise}">
                     <div class="info-card">
                         <div class="info-grid">
                             <div class="info-item">
+                                <label>Adresse</label>
+                                <span>${entreprise.adresse}</span>
+                            </div>
+                            <div class="info-item">
                                 <label>Ville</label>
-                                <span>${companyInfo.communeEtablissement}</span>
+                                <span>${entreprise.commune}</span>
                             </div>
                             <div class="info-item">
                                 <label>Code Postal</label>
-                                <span>${companyInfo.codePostal}</span>
+                                <span>${entreprise.codePostal}</span>
+                            </div>
+                            <div class="info-item">
+                                <label>Site Web</label>
+                                <span><a href="http://${entreprise.siteWeb}" target="_blank"
+                                        style="color: #fff; text-decoration: underline;">${entreprise.siteWeb}</a></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Contact</label>
+                                <span>${entreprise.contact}</span>
                             </div>
                         </div>
                     </div>
@@ -192,7 +205,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="stage" items="${stages}">
+                            <c:forEach var="stage" items="${entreprise.stages}">
                                 <tr>
                                     <td>
                                         <strong style="color: #fff;">${stage.prenomEtudiant}

@@ -1,6 +1,5 @@
 package fr.univartois.stage.controller;
 
-import fr.univartois.stage.model.StageEntry;
 import fr.univartois.stage.service.StageService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -10,8 +9,6 @@ import jakarta.mvc.View;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-
-import java.util.List;
 
 @Controller
 @Path("company")
@@ -28,13 +25,16 @@ public class CompanyController {
     @Path("/{name}")
     @View("company_detail.jsp")
     public void companyDetail(@PathParam("name") String name) {
-        StageEntry companyInfo = stageService.findOneCompany(name);
-        List<StageEntry> stages = stageService.findByCompany(name).stream()
-                .filter(StageEntry::isAccord)
-                .toList();
+        var entreprise = stageService.findEntrepriseByName(name);
+        if (entreprise == null) {
+            // Fallback if not found, though in this context we assume it exists if link was
+            // clicked
+            // We could redirect or show 404, but for now we'll just return
+            return;
+        }
 
-        models.put("companyName", name);
-        models.put("companyInfo", companyInfo); // For address, etc.
-        models.put("stages", stages);
+        models.put("companyName", entreprise.getNom());
+        models.put("entreprise", entreprise);
+        // We can access stages via entreprise.getStages() in the view
     }
 }
