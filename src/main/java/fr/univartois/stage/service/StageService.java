@@ -71,18 +71,24 @@ public class StageService {
     }
 
     private void loadFromCsv() throws IOException {
+        System.out.println("DEBUG: Starting loadFromCsv...");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("stages2025-anonyme.csv")) {
             if (is == null) {
+                System.err.println("DEBUG: stages2025-anonyme.csv NOT FOUND in classpath!");
                 throw new IOException("stages2025-anonyme.csv introuvable dans resources");
             }
+            System.out.println("DEBUG: stages2025-anonyme.csv found.");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
                 List<String> lines = reader.lines()
                         .filter(line -> !line.isBlank())
                         .toList();
 
+                System.out.println("DEBUG: Loaded " + lines.size() + " lines from CSV.");
+
                 if (lines.isEmpty()) {
                     headers = defaultHeaders();
+                    stages = new ArrayList<>(); // Ensure mutable
                     return;
                 }
 
@@ -115,7 +121,8 @@ public class StageService {
                             accord));
                 }
 
-                stages = loaded;
+                stages = new ArrayList<>(loaded); // Ensure mutable
+                System.out.println("DEBUG: Initialized stages list with " + stages.size() + " entries.");
             }
         }
     }
@@ -257,12 +264,20 @@ public class StageService {
 
                 if (!exists) {
                     newStages.add(newStage);
-                    count++;
                 }
             }
-            // Remplacement global de la liste
-            if (!newStages.isEmpty()) {
-                stages = newStages;
+
+            // Ajout (Append) à la liste existante avec vérification de doublons globale
+            for (StageEntry s : newStages) {
+                boolean alreadyInGlobal = stages.stream()
+                        .anyMatch(existing -> existing.getMailUniversitaire().equalsIgnoreCase(s.getMailUniversitaire()) &&
+                                existing.getDateDebut().equals(s.getDateDebut()) &&
+                                existing.getNomEtablissementAccueil().equalsIgnoreCase(s.getNomEtablissementAccueil()));
+
+                if (!alreadyInGlobal) {
+                    stages.add(s);
+                    count++;
+                }
             }
         }
         return count;

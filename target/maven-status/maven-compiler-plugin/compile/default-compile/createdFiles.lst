@@ -13,5 +13,5 @@ fr/univartois/stage/controller/StageController.class
 fr/univartois/stage/controller/AuthController.class
 fr/univartois/stage/model/User$Role.class
 fr/univartois/stage/filter/ForceSessionFilter.class
-fr/univartois/stage/service/LdapService.class
 fr/univartois/stage/model/User.class
+fr/univartois/stage/service/LdapService.class
