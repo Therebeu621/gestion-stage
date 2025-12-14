@@ -107,8 +107,10 @@ public class StageController {
             Part filePart = request.getPart("file");
             if (filePart != null) {
                 try (InputStream inputStream = filePart.getInputStream()) {
-                    int count = stageService.importStages(inputStream);
-                    models.put("message", count + " stages importés avec succès.");
+                    String currentUser = userSession.getUser().getLogin();
+                    int count = stageService.importStages(inputStream, currentUser);
+                    models.put("message",
+                            count + " stages importés avec succès pour le responsable " + currentUser + ".");
                 }
             } else {
                 models.put("error", "Aucun fichier reçu.");

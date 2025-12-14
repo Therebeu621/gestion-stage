@@ -214,7 +214,7 @@ public class StageService {
                 .orElse(null);
     }
 
-    public int importStages(InputStream inputStream) throws IOException {
+    public int importStages(InputStream inputStream, String currentUser) throws IOException {
         int count = 0;
         List<StageEntry> newStages = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
@@ -236,6 +236,15 @@ public class StageService {
                 List<String> values = parseLine(line);
                 while (values.size() < 10) {
                     values.add("");
+                }
+
+                // Check responsible (Teacher Name is at index 6)
+                // If currentUser is null or empty (should not happen for logged in admin), we might allow all or none.
+                // Requirement: "Seuls les stages dont le responsable est l'utilisateur identifié sont importés"
+                // mapping: login "johan" matches CSV "Johan"
+                String responsableCsv = values.size() > 6 ? values.get(6) : "";
+                if (currentUser != null && !currentUser.equalsIgnoreCase(responsableCsv)) {
+                    continue; 
                 }
 
                 boolean accord = false;
@@ -262,6 +271,7 @@ public class StageService {
                                 s.getDateDebut().equals(newStage.getDateDebut()) &&
                                 s.getNomEtablissementAccueil().equalsIgnoreCase(newStage.getNomEtablissementAccueil()));
 
+                                
                 if (!exists) {
                     newStages.add(newStage);
                 }
