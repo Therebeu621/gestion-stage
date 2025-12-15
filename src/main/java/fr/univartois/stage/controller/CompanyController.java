@@ -27,10 +27,8 @@ public class CompanyController {
     public void companyDetail(@PathParam("name") String name) {
         var entreprise = stageService.findEntrepriseByName(name);
         if (entreprise == null) {
-            if (entreprise == null) {
-                // Entreprise non trouvée, arrêt du traitement
-                return;
-            }
+            // Entreprise non trouvée, on renvoie une 404
+            throw new jakarta.ws.rs.NotFoundException("L'entreprise " + name + " n'existe pas.");
         }
 
         models.put("companyName", entreprise.getNom());
