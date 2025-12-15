@@ -18,7 +18,7 @@
     <!-- Responsables de formation (ADMIN) -->
     <!-- Le username doit correspondre au prénom de l'enseignant dans le CSV pour l'import -->
     <user username="johan" password="admin123" roles="ADMIN"/>
-    <user username="daniel" password="admin123" roles="ADMIN"/>
+    <user username="Daniel" password="admin123" roles="ADMIN"/>
     <user username="francois" password="admin123" roles="ADMIN"/>
     <user username="admin" password="admin" roles="ADMIN"/>
 
