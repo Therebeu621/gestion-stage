@@ -33,8 +33,7 @@ public class EntrepriseController {
     public void detail(@PathParam("id") String id) {
         var entreprise = stageService.getEntreprise(id);
         if (entreprise == null) {
-            // In a real app we might redirect or show 404
-            // For now, let the view handle null or show empty
+            throw new jakarta.ws.rs.NotFoundException("L'entreprise " + id + " n'existe pas.");
         }
         models.put("entreprise", entreprise);
     }
