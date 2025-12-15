@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcat-users xmlns="http://tomcat.apache.org/xml"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
+              version="1.0">
+
+    <!-- Rôles de l'application -->
+    <role rolename="STUDENT"/>
+    <role rolename="ADMIN"/>
+
+    <!-- Utilisateurs préconfigurés pour le projet -->
+    
+    <!-- Étudiants (username = email du CSV pour voir les stages) -->
+    <user username="mail1@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail2@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="etudiant" password="password" roles="STUDENT"/>
+    
+    <!-- Responsables de formation (ADMIN) -->
+    <!-- Le username doit correspondre au prénom de l'enseignant dans le CSV pour l'import -->
+    <user username="johan" password="admin123" roles="ADMIN"/>
+    <user username="daniel" password="admin123" roles="ADMIN"/>
+    <user username="francois" password="admin123" roles="ADMIN"/>
+    <user username="admin" password="admin" roles="ADMIN"/>
+
+</tomcat-users>

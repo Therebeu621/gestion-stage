@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    container_name: mon-futur-stage
+    ports:
+      - "8080:8080"
+    environment:
+      - JAVA_OPTS=-Xmx512m
+    restart: unless-stopped
+
+# Pour lancer : docker compose up -d
+# Pour arrêter : docker compose down
+# Pour voir les logs : docker compose logs -f app
