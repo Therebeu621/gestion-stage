@@ -19,13 +19,6 @@ public class JPAConfig {
     }
 
     @Produces
-    // @jakarta.enterprise.context.RequestScoped // Careful with ApplicationScoped
-    // Service using RequestScoped EM without proper proxy handling in some old weld
-    // versions, but usually fine.
-    // Actually, for ApplicationScoped service, it's better to inject
-    // EntityManagerFactory or handle EM creation per method or use RequestScoped
-    // service.
-    // However, simplest fix: Produce RequestScoped EM, and CDI proxy handles it.
     @jakarta.enterprise.context.RequestScoped
     public EntityManager createEntityManager() {
         return emf.createEntityManager();

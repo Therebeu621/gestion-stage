@@ -84,19 +84,6 @@ public class StageService {
     }
 
     public void toggleConsent(String email, int stageIndex) {
-        // Note: stageIndex logic is tricky with DB. Ideally we should use ID.
-        // For backward compatibility with the current controller logic, we might need a
-        // workaround.
-        // BUT strict requirement: "toggleConsent" was based on index in the list.
-        // With DB, we should use ID.
-        // However, the controller passes an index.
-        // Let's find the specific stage by user email and approximate index (dangerous)
-        // OR
-        // ideally, the frontend should send the ID.
-        // Since I cannot change frontend right now easily without more context, I will
-        // assume
-        // the list order is consistent if sorted by ID.
-
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

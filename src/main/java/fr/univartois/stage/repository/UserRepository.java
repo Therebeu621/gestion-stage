@@ -14,13 +14,6 @@ public class UserRepository {
             return Optional.empty();
         }
 
-        // Mode Tomcat 100%:
-        // On suppose l'utilisateur authentifié par le Realm Tomcat (ex: MemoryRealm).
-        // On construit l'objet User via le login.
-        // Convention: Login = Email.
-
-        // Rôle par défaut: STUDENT (Auth réelle gérée par web.xml,
-        // cet objet ne sert qu'à la logique appli/session).
         User.Role role = User.Role.STUDENT;
 
         if ("admin".equalsIgnoreCase(login)) {
