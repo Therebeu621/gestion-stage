@@ -11,8 +11,72 @@
     <!-- Utilisateurs préconfigurés pour le projet -->
     
     <!-- Étudiants (username = email du CSV pour voir les stages) -->
+    <user username="etudiant@example.com" password="password" roles="STUDENT"/>
     <user username="mail1@ens.univ-artois.fr" password="password" roles="STUDENT"/>
     <user username="mail2@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail3@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail4@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail5@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail6@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail7@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail8@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail9@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail10@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail11@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail12@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail13@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail14@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail15@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail16@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail17@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail18@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail19@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail20@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail21@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail22@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail23@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail24@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail25@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail26@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail27@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail28@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail29@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail30@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail31@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail32@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail33@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail34@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail35@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail36@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail37@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail38@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail39@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail40@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail41@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail42@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail43@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail44@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail45@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail46@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail47@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail48@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail49@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail50@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail51@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail52@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail53@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail54@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail55@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail56@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail57@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail58@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail59@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail60@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail61@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail62@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail63@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail64@ens.univ-artois.fr" password="password" roles="STUDENT"/>
+    <user username="mail65@ens.univ-artois.fr" password="password" roles="STUDENT"/>
     <user username="etudiant" password="password" roles="STUDENT"/>
     
     <!-- Responsables de formation (ADMIN) -->

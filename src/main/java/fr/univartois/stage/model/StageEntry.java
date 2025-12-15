@@ -1,18 +1,28 @@
 package fr.univartois.stage.model;
 
+@jakarta.persistence.Entity
+@jakarta.persistence.Table(name = "stages")
 public class StageEntry {
 
-    private final String nomEtudiant;
-    private final String prenomEtudiant;
-    private final String mailUniversitaire;
-    private final String dateDebut;
-    private final String dateFin;
-    private final String formation;
-    private final String prenomEnseignantReferent;
-    private final String nomEtablissementAccueil;
-    private final String communeEtablissement;
-    private final String codePostal;
+    @jakarta.persistence.Id
+    @jakarta.persistence.GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    private Long id;
+
+    private String nomEtudiant;
+    private String prenomEtudiant;
+    private String mailUniversitaire;
+    private String dateDebut;
+    private String dateFin;
+    private String formation;
+    private String prenomEnseignantReferent;
+    private String nomEtablissementAccueil;
+    private String communeEtablissement;
+    private String codePostal;
     private boolean accord;
+
+    public StageEntry() {
+        // Constructeur vide requis par JPA
+    }
 
     public StageEntry(String nomEtudiant,
             String prenomEtudiant,

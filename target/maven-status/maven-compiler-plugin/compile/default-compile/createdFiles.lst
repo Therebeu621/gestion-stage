@@ -9,6 +9,7 @@ fr/univartois/stage/repository/UserRepository.class
 fr/univartois/stage/controller/MyStagesController.class
 fr/univartois/stage/service/StageService.class
 fr/univartois/stage/controller/StageController$CompanyViewModel.class
+fr/univartois/stage/config/JPAConfig.class
 fr/univartois/stage/controller/StageController.class
 fr/univartois/stage/controller/AuthController.class
 fr/univartois/stage/model/User$Role.class

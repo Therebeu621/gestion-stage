@@ -6,7 +6,23 @@ services:
       - "8080:8080"
     environment:
       - JAVA_OPTS=-Xmx512m
+    depends_on:
+      - db
     restart: unless-stopped
+
+  db:
+    image: postgres:15
+    container_name: stage-db
+    environment:
+      POSTGRES_DB: stagedb
+      POSTGRES_USER: stageuser
+      POSTGRES_PASSWORD: stagepassword
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres-data:
 
 # Pour lancer : docker compose up -d
 # Pour arrêter : docker compose down

@@ -7,7 +7,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.mvc.Controller;
 import jakarta.mvc.Models;
-import jakarta.mvc.View;
+
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -30,15 +30,15 @@ public class MyStagesController {
     private Models models;
 
     @GET
-    @View("my_stages.jsp")
-    public void myStages() {
+    public String myStages() {
         if (!userSession.isLoggedIn() || userSession.getUser().getEmail() == null) {
-            return; // Ou rediriger vers login
+            return "redirect:/auth/login"; // Redirection propre vers le login
         }
 
         String email = userSession.getUser().getEmail();
         List<StageEntry> myStages = stageService.findByStudentEmail(email);
         models.put("stages", myStages);
+        return "my_stages.jsp";
     }
 
     @POST
