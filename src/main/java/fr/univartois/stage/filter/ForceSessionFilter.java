@@ -8,12 +8,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-/**
- * Filtre pour forcer la création de session.
- * Évite les erreurs "Cannot create a session after the response has been
- * committed"
- * avec les filtres JAX-RS tardifs (ex: Krazo CSRF).
- */
 public class ForceSessionFilter implements Filter {
 
     @jakarta.inject.Inject

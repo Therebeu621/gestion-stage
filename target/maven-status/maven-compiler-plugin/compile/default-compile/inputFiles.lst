@@ -12,4 +12,5 @@
 /Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/model/User.java
 /Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/LdapService.java
 /Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/filter/ForceSessionFilter.java
+/Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/config/JPAConfig.java
 /Users/lucas/Desktop/Ecole/java/projet/groupe-jakarta-mvc-1/src/main/java/fr/univartois/stage/service/StageService.java

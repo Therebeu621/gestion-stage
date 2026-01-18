@@ -6,12 +6,18 @@
     <persistence-unit name="stagePU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         
-        <non-jta-data-source>java:comp/env/jdbc/StageDB</non-jta-data-source>
+
 
         <class>fr.univartois.stage.model.StageEntry</class>
         <class>fr.univartois.stage.model.User</class>
 
         <properties>
+            <!-- Database Connection -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://db:5432/stagedb"/>
+            <property name="jakarta.persistence.jdbc.user" value="stageuser"/>
+            <property name="jakarta.persistence.jdbc.password" value="stagepassword"/>
+
             <!-- Hibernate Properties -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -3,6 +3,10 @@ package fr.univartois.stage.service;
 import fr.univartois.stage.model.StageEntry;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,16 +21,31 @@ public class StageService {
 
     private static final int EXPECTED_COLUMNS = 10;
 
+    @Inject
+    private EntityManagerFactory emf;
+
+    @Inject
+    private EntityManager em;
+
     private List<String> headers = List.of();
-    private List<StageEntry> stages = List.of();
 
     @PostConstruct
     void init() {
-        try {
-            loadFromCsv();
-        } catch (IOException e) {
-            headers = defaultHeaders();
-            stages = List.of();
+        // Create a temporary EntityManager for initialization (outside of HTTP request)
+        try (EntityManager initEm = emf.createEntityManager()) {
+            try {
+                long count = initEm.createQuery("SELECT COUNT(s) FROM StageEntry s", Long.class).getSingleResult();
+                if (count == 0) {
+                    System.out.println("DEBUG: DB is empty. Loading initial data from CSV...");
+                    loadFromCsvAndPersist(initEm);
+                } else {
+                    System.out.println("DEBUG: DB already contains data (" + count + " entries). Skipping CSV load.");
+                    headers = defaultHeaders();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                headers = defaultHeaders();
+            }
         }
     }
 
@@ -35,94 +54,88 @@ public class StageService {
     }
 
     public List<StageEntry> findAll() {
-        return stages;
+        return em.createQuery("SELECT s FROM StageEntry s", StageEntry.class).getResultList();
     }
 
     public List<StageEntry> findByCompany(String companyName) {
         if (companyName == null || companyName.isBlank()) {
             return List.of();
         }
-        return stages.stream()
-                .filter(s -> companyName.equalsIgnoreCase(s.getNomEtablissementAccueil()))
-                .filter(StageEntry::isAccord)
-                .toList();
+        return em.createQuery(
+                "SELECT s FROM StageEntry s WHERE UPPER(s.nomEtablissementAccueil) = UPPER(:name) AND s.accord = true",
+                StageEntry.class)
+                .setParameter("name", companyName)
+                .getResultList();
     }
 
     public StageEntry findOneCompany(String companyName) {
-        return findByCompany(companyName).stream()
-                .findFirst()
-                .orElse(null);
+        List<StageEntry> results = findByCompany(companyName);
+        return results.isEmpty() ? null : results.get(0);
     }
 
     public List<StageEntry> findByStudentEmail(String email) {
         if (email == null)
             return List.of();
-        return stages.stream()
-                .filter(s -> email.equalsIgnoreCase(s.getMailUniversitaire()))
-                .toList();
+        return em
+                .createQuery("SELECT s FROM StageEntry s WHERE UPPER(s.mailUniversitaire) = UPPER(:email)",
+                        StageEntry.class)
+                .setParameter("email", email)
+                .getResultList();
     }
 
     public void toggleConsent(String email, int stageIndex) {
-        List<StageEntry> studentStages = findByStudentEmail(email);
-        if (stageIndex >= 0 && stageIndex < studentStages.size()) {
-            StageEntry stage = studentStages.get(stageIndex);
-            stage.setAccord(!stage.isAccord());
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            List<StageEntry> studentStages = findByStudentEmail(email);
+            if (stageIndex >= 0 && stageIndex < studentStages.size()) {
+                StageEntry stage = studentStages.get(stageIndex);
+                stage.setAccord(!stage.isAccord());
+                em.merge(stage); // Save change
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive())
+                tx.rollback();
+            e.printStackTrace();
         }
     }
 
-    private void loadFromCsv() throws IOException {
-        System.out.println("DEBUG: Starting loadFromCsv...");
+    private void loadFromCsvAndPersist(EntityManager entityManager) throws IOException {
+        System.out.println("DEBUG: Starting loadFromCsvAndPersist...");
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("stages2025-anonyme.csv")) {
             if (is == null) {
                 System.err.println("DEBUG: stages2025-anonyme.csv NOT FOUND in classpath!");
                 throw new IOException("stages2025-anonyme.csv introuvable dans resources");
             }
-            System.out.println("DEBUG: stages2025-anonyme.csv found.");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
                 List<String> lines = reader.lines()
                         .filter(line -> !line.isBlank())
                         .toList();
 
-                System.out.println("DEBUG: Loaded " + lines.size() + " lines from CSV.");
-
                 if (lines.isEmpty()) {
                     headers = defaultHeaders();
-                    stages = new ArrayList<>(); // Ensure mutable
                     return;
                 }
 
                 headers = parseLine(lines.get(0));
 
-                List<StageEntry> loaded = new ArrayList<>();
-                for (String line : lines.subList(1, lines.size())) {
-                    List<String> values = parseLine(line);
-                    while (values.size() < 10) { // Ensure at least 10 columns
-                        values.add("");
+                EntityTransaction tx = entityManager.getTransaction();
+                tx.begin();
+                try {
+                    for (String line : lines.subList(1, lines.size())) {
+                        StageEntry entry = parseToEntry(line);
+                        if (entry != null) {
+                            entityManager.persist(entry);
+                        }
                     }
-
-                    // Read 11th column for 'accord' if present
-                    boolean accord = false;
-                    if (values.size() > 10) {
-                        accord = Boolean.parseBoolean(values.get(10));
-                    }
-
-                    loaded.add(new StageEntry(
-                            values.get(0),
-                            values.get(1),
-                            values.get(2),
-                            values.get(3),
-                            values.get(4),
-                            values.get(5),
-                            values.get(6),
-                            values.get(7),
-                            values.get(8),
-                            values.get(9),
-                            accord));
+                    tx.commit();
+                } catch (Exception e) {
+                    if (tx.isActive())
+                        tx.rollback();
+                    throw e;
                 }
-
-                stages = new ArrayList<>(loaded); // Ensure mutable
-                System.out.println("DEBUG: Initialized stages list with " + stages.size() + " entries.");
             }
         }
     }
@@ -143,7 +156,6 @@ public class StageService {
                 current.append(c);
             }
         }
-
         columns.add(clean(current.toString()));
         return columns;
     }
@@ -156,46 +168,52 @@ public class StageService {
         return cleaned;
     }
 
+    private StageEntry parseToEntry(String line) {
+        List<String> values = parseLine(line);
+        while (values.size() < 10) {
+            values.add("");
+        }
+        boolean accord = values.size() > 10 && Boolean.parseBoolean(values.get(10));
+
+        return new StageEntry(
+                values.get(0), values.get(1), values.get(2), values.get(3),
+                values.get(4), values.get(5), values.get(6), values.get(7),
+                values.get(8), values.get(9), accord);
+    }
+
     private List<String> defaultHeaders() {
         return List.of(
-                "Nom étudiant",
-                "Prénom étudiant",
-                "Mail Universitaire étudiant",
-                "Date Début Stage",
-                "Date Fin Stage",
-                "Formation",
-                "Prénom Enseignant référent",
-                "Nom Etablissement d'accueil",
-                "Etablissement d'Accueil - Commune",
-                "Code Postal");
+                "Nom étudiant", "Prénom étudiant", "Mail Universitaire étudiant",
+                "Date Début Stage", "Date Fin Stage", "Formation",
+                "Prénom Enseignant référent", "Nom Etablissement d'accueil",
+                "Etablissement d'Accueil - Commune", "Code Postal");
     }
 
     // --- Entreprise Aggregation Logic ---
 
     public List<fr.univartois.stage.model.Entreprise> findAllEntreprises() {
+        // We fetch all stages from DB
+        List<StageEntry> allStages = findAll();
+
         java.util.Map<String, fr.univartois.stage.model.Entreprise> map = new java.util.HashMap<>();
 
-        for (StageEntry stage : stages) {
+        for (StageEntry stage : allStages) {
             String name = stage.getNomEtablissementAccueil();
             if (name == null || name.isBlank())
                 continue;
 
-            // Compute ID consistent with Entreprise logic (or reuse existing instance)
             if (!map.containsKey(name)) {
-                // We create the entreprise using the first entry found for location
                 map.put(name, new fr.univartois.stage.model.Entreprise(
                         name,
                         stage.getCommuneEtablissement(),
                         stage.getCodePostal()));
             }
-            // Aggregation logic
             if (stage.isAccord()) {
                 map.get(name).addStage(stage);
             }
         }
 
         List<fr.univartois.stage.model.Entreprise> result = new ArrayList<>(map.values());
-        // Sort by name by default
         result.sort((e1, e2) -> e1.getNom().compareToIgnoreCase(e2.getNom()));
         return result;
     }
@@ -216,78 +234,44 @@ public class StageService {
 
     public int importStages(InputStream inputStream, String currentUser) throws IOException {
         int count = 0;
-        List<StageEntry> newStages = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            List<String> lines = reader.lines()
-                    .filter(line -> !line.isBlank())
-                    .toList();
-
-            if (lines.isEmpty()) {
+            List<String> lines = reader.lines().filter(l -> !l.isBlank()).toList();
+            if (lines.isEmpty())
                 return 0;
-            }
 
-            // Skip header if present (assuming first line is header)
-            int start = 0;
-            if (!lines.isEmpty() && lines.get(0).contains("Nom étudiant")) {
-                start = 1;
-            }
+            int start = (lines.get(0).contains("Nom étudiant")) ? 1 : 0;
 
-            for (String line : lines.subList(start, lines.size())) {
-                List<String> values = parseLine(line);
-                while (values.size() < 10) {
-                    values.add("");
+            EntityTransaction tx = em.getTransaction();
+            try {
+                tx.begin();
+                for (String line : lines.subList(start, lines.size())) {
+                    StageEntry newStage = parseToEntry(line);
+
+                    // Permission Check
+                    String responsableCsv = newStage.getPrenomEnseignantReferent();
+                    if (currentUser != null && !currentUser.equalsIgnoreCase(responsableCsv)) {
+                        continue;
+                    }
+
+                    // Duplicate check via DB Query
+                    long exists = em.createQuery(
+                            "SELECT COUNT(s) FROM StageEntry s WHERE UPPER(s.mailUniversitaire) = UPPER(:mail) AND s.dateDebut = :date AND UPPER(s.nomEtablissementAccueil) = UPPER(:company)",
+                            Long.class)
+                            .setParameter("mail", newStage.getMailUniversitaire())
+                            .setParameter("date", newStage.getDateDebut())
+                            .setParameter("company", newStage.getNomEtablissementAccueil())
+                            .getSingleResult();
+
+                    if (exists == 0) {
+                        em.persist(newStage);
+                        count++;
+                    }
                 }
-
-                // Check responsible (Teacher Name is at index 6)
-                // If currentUser is null or empty (should not happen for logged in admin), we might allow all or none.
-                // Requirement: "Seuls les stages dont le responsable est l'utilisateur identifié sont importés"
-                // mapping: login "johan" matches CSV "Johan"
-                String responsableCsv = values.size() > 6 ? values.get(6) : "";
-                if (currentUser != null && !currentUser.equalsIgnoreCase(responsableCsv)) {
-                    continue; 
-                }
-
-                boolean accord = false;
-                if (values.size() > 10) {
-                    accord = Boolean.parseBoolean(values.get(10));
-                }
-
-                StageEntry newStage = new StageEntry(
-                        values.get(0),
-                        values.get(1),
-                        values.get(2),
-                        values.get(3),
-                        values.get(4),
-                        values.get(5),
-                        values.get(6),
-                        values.get(7),
-                        values.get(8),
-                        values.get(9),
-                        accord);
-
-                // Duplicate check
-                boolean exists = newStages.stream()
-                        .anyMatch(s -> s.getMailUniversitaire().equalsIgnoreCase(newStage.getMailUniversitaire()) &&
-                                s.getDateDebut().equals(newStage.getDateDebut()) &&
-                                s.getNomEtablissementAccueil().equalsIgnoreCase(newStage.getNomEtablissementAccueil()));
-
-                                
-                if (!exists) {
-                    newStages.add(newStage);
-                }
-            }
-
-            // Ajout (Append) à la liste existante avec vérification de doublons globale
-            for (StageEntry s : newStages) {
-                boolean alreadyInGlobal = stages.stream()
-                        .anyMatch(existing -> existing.getMailUniversitaire().equalsIgnoreCase(s.getMailUniversitaire()) &&
-                                existing.getDateDebut().equals(s.getDateDebut()) &&
-                                existing.getNomEtablissementAccueil().equalsIgnoreCase(s.getNomEtablissementAccueil()));
-
-                if (!alreadyInGlobal) {
-                    stages.add(s);
-                    count++;
-                }
+                tx.commit();
+            } catch (Exception e) {
+                if (tx.isActive())
+                    tx.rollback();
+                throw e;
             }
         }
         return count;
